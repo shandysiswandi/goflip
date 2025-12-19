@@ -1,0 +1,185 @@
+{
+	"info": {
+		"_postman_id": "fcda28d7-cdf3-481e-8b26-736de21cf065",
+		"name": "FLIP",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "8016615"
+	},
+	"item": [
+		{
+			"name": "flip",
+			"item": [
+				{
+					"name": "Health",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"approval_id\": 140,\n    \"action\": 1, // 1, approve, 2, reject\n    \"note\": \"notex\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/health",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"health"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Balance",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"approval_id\": 140,\n    \"action\": 1, // 1, approve, 2, reject\n    \"note\": \"notex\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/balance?upload_id={{upload_id}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"balance"
+							],
+							"query": [
+								{
+									"key": "upload_id",
+									"value": "{{upload_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Transactions Issues",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"approval_id\": 140,\n    \"action\": 1, // 1, approve, 2, reject\n    \"note\": \"notex\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/transactions/issues?upload_id={{upload_id}}&status=PENDING&type=CREDIT&page=1&page_size=24",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"transactions",
+								"issues"
+							],
+							"query": [
+								{
+									"key": "upload_id",
+									"value": "{{upload_id}}"
+								},
+								{
+									"key": "status",
+									"value": "PENDING",
+									"description": "FAILED,PENDING | FAILED | PENDING"
+								},
+								{
+									"key": "type",
+									"value": "CREDIT",
+									"description": "DEBIT | CREDIT"
+								},
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "page_size",
+									"value": "24"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Statements",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code >= 200 && pm.response.code < 300) {\r",
+									"    const jsonData = pm.response.json();\r",
+									"\r",
+									"    // Extra safety check\r",
+									"    if (jsonData?.data?.upload_id) {\r",
+									"        pm.collectionVariables.set(\"upload_id\", jsonData.data.upload_id);\r",
+									"    }\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "///wsl.localhost/Ubuntu-25.04/home/dev/development/github.com/shandysiswandi/goflip/examples/statement.csv"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:8080/statements",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"statements"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
